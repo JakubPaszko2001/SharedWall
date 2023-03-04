@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
+
+const LoginBtn = styled.button`
+  color: green;
+`;
+
 const Login = () => {
   const [modal, setModal] = useState(false);
   const [login, setLogin] = useState(false);
-  const LoginBtn = styled.button`
-    color: green;
-  `;
 
   function openModal() {
     setModal(true);

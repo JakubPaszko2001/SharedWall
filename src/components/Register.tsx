@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Modal from "./Modal";
 
+const RegisterBtn = styled.button`
+  color: green;
+`;
+
 const Register = () => {
   const [modal, setModal] = useState(false);
   const [register, setRegister] = useState(false);
-
-  const RegisterBtn = styled.button`
-    color: green;
-  `;
 
   function openModal() {
     setModal(true);
