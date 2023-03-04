@@ -44,7 +44,9 @@ const Modal = ({ closeModal, register }: Props) => {
 
   const createUser = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      if (password === confirmPassword) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      }
     } catch (error) {
       console.log(error);
       setError("Password should be at least 6 characters");
@@ -52,7 +54,11 @@ const Modal = ({ closeModal, register }: Props) => {
   };
 
   const signIn = async () => {
-    await signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      setError("Valid email or password");
+    }
   };
 
   function submitForm(e) {
