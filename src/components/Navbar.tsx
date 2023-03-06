@@ -19,24 +19,17 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-const CurrentUser = styled.div``;
+const CurrentUser = styled.p``;
 const Logout = styled.button``;
 
-const Navbar = () => {
-  const [currentUser, setCurrentUser] = useState(null);
-
+const Navbar = ({ currentUser }) => {
   const logout = () => {
     return auth.signOut();
   };
 
-  useEffect(() => {
-    const subscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-    });
-  }, []);
   return (
     <Nav>
-      <LogoTitle>Auction</LogoTitle>
+      <LogoTitle>SharedWall</LogoTitle>
       <Wrapper>
         {currentUser ? (
           <>
