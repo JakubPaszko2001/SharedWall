@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 const CurrentUser = styled.p``;
 const Logout = styled.button``;
 
-const Navbar = ({ currentUser }) => {
+const Navbar = ({ currentUser }: any) => {
   const logout = () => {
     return auth.signOut();
   };

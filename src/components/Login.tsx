@@ -27,7 +27,9 @@ const Login = () => {
       >
         Login
       </LoginBtn>
-      {modal && <Modal login={login} closeModal={closeModal} />}
+      {modal && (
+        <Modal login={login} closeModal={closeModal} register={false} />
+      )}
     </div>
   );
 };

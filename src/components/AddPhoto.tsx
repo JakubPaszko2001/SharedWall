@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { storage } from "../config/firebase";
+import { storage, db } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 const AddPhotoContainer = styled.div`
   width: 60vw;
@@ -24,66 +25,82 @@ const Label = styled.label``;
 const Input = styled.input``;
 const Send = styled.button``;
 
-const AddPhoto = ({ currentUser }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+const AddPhoto = ({ currentUser }: any) => {
+  const [data, setData] = useState({});
   const [photo, setPhoto] = useState(null);
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
   const imgType = ["image/jpeg", "image/png", "image/jpg"];
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleChange(e) {
+    setData({ ...data, [e.target.name]: e.target.value });
   }
 
-  function sendData(photo) {
-    if (!photo) return;
-    const storageRef = ref(storage, `photos/${photo}`);
-    const uploadTask = uploadBytesResumable(storageRef, photo);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      },
-      (err) => {
-        console.log(err);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => console.log(url));
-      }
-    );
-  }
+  useEffect(() => {
+    function sendData() {
+      const storageRef = ref(storage, `photos/${crypto.randomUUID()}`);
+      const uploadTask = uploadBytesResumable(storageRef, photo);
+      console.log(photo);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setTimeout(() => {
+            setProgress(progress);
+          }, 1000);
+        },
+        (err) => {
+          console.log(err);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev) => ({ ...prev, url: downloadURL }));
+          });
+        }
+      );
+    }
+    photo && sendData();
+  }, [photo]);
+
+  const handleSubmit = async (e: Event) => {
+    e.preventDefault();
+    await addDoc(collection(db, "photos"), {
+      ...data,
+    });
+  };
+
   return (
     <AddPhotoContainer>
       {error && <p>{error}</p>}
       <PhotoForm onSubmit={handleSubmit}>
-        <Label>Title</Label>
+        <Label htmlFor="title">Title:</Label>
+        <Input id="title" label="Title" name="title" onChange={handleChange} />
+        <Label htmlFor="description">Description:</Label>
         <Input
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
+          id="description"
+          label="Description"
+          name="description"
+          onChange={handleChange}
         />
-        <Label>Description</Label>
+        <Label htmlFor="addPhoto">Choose Photo:</Label>
         <Input
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-        />
-        <Label>Add Photo</Label>
-        <Input
+          id="addPhoto"
+          label="addPhoto"
           type="file"
           onChange={(e) => {
             if (imgType.includes(e.target.files[0].type)) {
               setPhoto(e.target.files[0]);
+              setData((prev) => ({ ...prev, currentUser: currentUser.email }));
               setError(null);
             } else {
               setError("Your file is not image");
             }
           }}
         />
-        <Send onClick={sendData(photo)}>Send</Send>
+        <Send type="submit" disabled={progress !== null && progress < 100}>
+          Send
+        </Send>
       </PhotoForm>
     </AddPhotoContainer>
   );

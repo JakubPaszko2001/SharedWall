@@ -27,7 +27,9 @@ const Register = () => {
       >
         Register
       </RegisterBtn>
-      {modal && <Modal register={register} closeModal={closeModal} />}
+      {modal && (
+        <Modal register={register} closeModal={closeModal} login={false} />
+      )}
     </div>
   );
 };

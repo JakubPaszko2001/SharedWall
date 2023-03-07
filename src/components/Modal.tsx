@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import {
   createUserWithEmailAndPassword,
@@ -7,7 +7,7 @@ import {
 import { auth } from "../config/firebase";
 
 interface Props {
-  closeModal: void;
+  closeModal: () => void;
   login: boolean;
   register: boolean;
 }
@@ -61,7 +61,7 @@ const Modal = ({ closeModal, register }: Props) => {
     }
   };
 
-  function submitForm(e) {
+  function submitForm(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setError("");
 
@@ -81,7 +81,7 @@ const Modal = ({ closeModal, register }: Props) => {
           <Label>Email</Label>
           <Input
             type="email"
-            onChange={(e) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setEmail(e.target.value);
             }}
             required
@@ -89,7 +89,7 @@ const Modal = ({ closeModal, register }: Props) => {
           <Label>Password</Label>
           <Input
             type="password"
-            onChange={(e) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setPassword(e.target.value);
             }}
             required
@@ -99,7 +99,7 @@ const Modal = ({ closeModal, register }: Props) => {
               <Label>Confirm Password</Label>
               <Input
                 type="password"
-                onChange={(e) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   setConfirmPassword(e.target.value);
                 }}
                 required

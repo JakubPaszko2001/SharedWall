@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import AddPhoto from "./components/AddPhoto";
 import Navbar from "./components/Navbar";
+import Photos from "./components/Photos";
 import { auth } from "./config/firebase";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     <div className="App">
       <Navbar currentUser={currentUser} />
       {currentUser && <AddPhoto currentUser={currentUser} />}
+      <Photos />
     </div>
   );
 }
