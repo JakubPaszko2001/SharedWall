@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { storage, db } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const AddPhotoContainer = styled.div`
   width: 60vw;
@@ -40,7 +40,6 @@ const AddPhoto = ({ currentUser }: any) => {
     function sendData() {
       const storageRef = ref(storage, `photos/${crypto.randomUUID()}`);
       const uploadTask = uploadBytesResumable(storageRef, photo);
-      console.log(photo);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -51,7 +50,7 @@ const AddPhoto = ({ currentUser }: any) => {
           }, 1000);
         },
         (err) => {
-          console.log(err);
+          setError(err);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -67,6 +66,7 @@ const AddPhoto = ({ currentUser }: any) => {
     e.preventDefault();
     await addDoc(collection(db, "photos"), {
       ...data,
+      timestamp: serverTimestamp(),
     });
   };
 

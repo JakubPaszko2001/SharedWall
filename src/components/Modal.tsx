@@ -48,7 +48,6 @@ const Modal = ({ closeModal, register }: Props) => {
         await createUserWithEmailAndPassword(auth, email, password);
       }
     } catch (error) {
-      console.log(error);
       setError("Password should be at least 6 characters");
     }
   };

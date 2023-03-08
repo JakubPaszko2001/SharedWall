@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../config/firebase";
 import styled from "styled-components";
@@ -21,21 +21,32 @@ const Img = styled.img`
 const Title = styled.h2``;
 const Description = styled.p``;
 
+interface Post {
+  title: string;
+  description: string;
+  url: string;
+}
+[];
+
 const Photos = () => {
   const [post, setPost] = useState([]);
 
   useEffect(() => {
+    const collectionRef = collection(db, "photos");
+    const q = query(collectionRef, orderBy("timestamp", "desc"));
+
     const postsRef = onSnapshot(
-      collection(db, "photos"),
+      q,
       (snapshot) => {
         let list = [];
         snapshot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setPost(list);
+        // console.log(post);
       },
       (err) => {
-        console.log(err);
+        // console.log(err);
       }
     );
     return () => {
@@ -45,10 +56,10 @@ const Photos = () => {
   return (
     <Container>
       {post &&
-        post.map((post) => {
+        post.map((post: Post) => {
           console.log(post);
           return (
-            <Post>
+            <Post key={post.title}>
               <Img src={post.url} />
               <Title>{post.title}</Title>
               <Description>{post.description}</Description>
