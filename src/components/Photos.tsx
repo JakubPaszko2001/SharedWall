@@ -1,4 +1,11 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../config/firebase";
 import styled from "styled-components";
@@ -20,15 +27,18 @@ const Img = styled.img`
 `;
 const Title = styled.h2``;
 const Description = styled.p``;
+const Button = styled.button``;
 
 interface Post {
+  id(id: any): void;
   title: string;
   description: string;
   url: string;
+  currentUser: string;
 }
 [];
 
-const Photos = () => {
+const Photos = ({ currentUser }: any) => {
   const [post, setPost] = useState([]);
 
   useEffect(() => {
@@ -38,12 +48,12 @@ const Photos = () => {
     const postsRef = onSnapshot(
       q,
       (snapshot) => {
-        let list = [];
+        let list: any = [];
         snapshot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setPost(list);
-        // console.log(post);
+        // console.log(list);
       },
       (err) => {
         // console.log(err);
@@ -53,16 +63,21 @@ const Photos = () => {
       postsRef();
     };
   }, []);
+  const handleDelete = async (id: any) => {
+    await deleteDoc(doc(db, "photos", id));
+  };
   return (
     <Container>
       {post &&
         post.map((post: Post) => {
-          console.log(post);
           return (
             <Post key={post.title}>
               <Img src={post.url} />
               <Title>{post.title}</Title>
               <Description>{post.description}</Description>
+              {currentUser && currentUser.email === post.currentUser && (
+                <Button onClick={() => handleDelete(post.id)}>delete</Button>
+              )}
             </Post>
           );
         })}

@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <Navbar currentUser={currentUser} />
       {currentUser && <AddPhoto currentUser={currentUser} />}
-      <Photos />
+      <Photos currentUser={currentUser} />
     </div>
   );
 }

@@ -27,12 +27,12 @@ const Send = styled.button``;
 
 const AddPhoto = ({ currentUser }: any) => {
   const [data, setData] = useState({});
-  const [photo, setPhoto] = useState(null);
-  const [error, setError] = useState(null);
+  const [photo, setPhoto] = useState<any>(null);
+  const [error, setError] = useState<string | any>(null);
   const [progress, setProgress] = useState(0);
   const imgType = ["image/jpeg", "image/png", "image/jpg"];
 
-  function handleChange(e) {
+  function handleChange(e: any) {
     setData({ ...data, [e.target.name]: e.target.value });
   }
 
@@ -67,6 +67,7 @@ const AddPhoto = ({ currentUser }: any) => {
     await addDoc(collection(db, "photos"), {
       ...data,
       timestamp: serverTimestamp(),
+      userId: crypto.randomUUID(),
     });
   };
 
@@ -75,20 +76,14 @@ const AddPhoto = ({ currentUser }: any) => {
       {error && <p>{error}</p>}
       <PhotoForm onSubmit={handleSubmit}>
         <Label htmlFor="title">Title:</Label>
-        <Input id="title" label="Title" name="title" onChange={handleChange} />
+        <Input id="title" name="title" onChange={handleChange} />
         <Label htmlFor="description">Description:</Label>
-        <Input
-          id="description"
-          label="Description"
-          name="description"
-          onChange={handleChange}
-        />
+        <Input id="description" name="description" onChange={handleChange} />
         <Label htmlFor="addPhoto">Choose Photo:</Label>
         <Input
           id="addPhoto"
-          label="addPhoto"
           type="file"
-          onChange={(e) => {
+          onChange={(e: any) => {
             if (imgType.includes(e.target.files[0].type)) {
               setPhoto(e.target.files[0]);
               setData((prev) => ({ ...prev, currentUser: currentUser.email }));
