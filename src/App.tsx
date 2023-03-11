@@ -8,7 +8,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const subscribe = auth.onAuthStateChanged((user) => {
+    const subscribe = auth.onAuthStateChanged((user: any) => {
       setCurrentUser(user);
     });
   }, []);
