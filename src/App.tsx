@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import AddPhoto from "./components/AddPhoto";
 import Navbar from "./components/Navbar";
 import Photos from "./components/Photos";

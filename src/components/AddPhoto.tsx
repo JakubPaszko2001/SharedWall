@@ -5,11 +5,10 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const AddPhotoContainer = styled.div`
-  width: 60vw;
-  background-color: red;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  width: 80vw;
+  margin: 0 auto;
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
@@ -17,13 +16,51 @@ const AddPhotoContainer = styled.div`
 
 const PhotoForm = styled.form`
   display: flex;
+  flex-direction: column;
   width: 100%;
+  max-width: 600px;
+  gap: 1rem;
   align-items: space-around;
   justify-content: space-around;
 `;
-const Label = styled.label``;
-const Input = styled.input``;
-const Send = styled.button``;
+const Label = styled.label`
+  font-size: 1.25rem;
+`;
+const Input = styled.input`
+  &:nth-child(2) {
+    background-color: white;
+    color: black;
+    border: black solid 2px;
+    border-radius: 20px;
+    padding: 8px 16px;
+  }
+  &:nth-child(4) {
+    background-color: white;
+    color: black;
+    border: black solid 2px;
+    border-radius: 20px;
+    padding: 8px 16px;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+const Send = styled.button`
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: black solid 2px;
+  border-radius: 20px;
+  padding: 8px 16px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+`;
+const Text = styled.h2`
+  margin-bottom: 10px;
+`;
 
 const AddPhoto = ({ currentUser }: any) => {
   const [data, setData] = useState({});
@@ -62,7 +99,7 @@ const AddPhoto = ({ currentUser }: any) => {
     photo && sendData();
   }, [photo]);
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     await addDoc(collection(db, "photos"), {
       ...data,
@@ -73,6 +110,7 @@ const AddPhoto = ({ currentUser }: any) => {
 
   return (
     <AddPhotoContainer>
+      <Text>Add Post</Text>
       {error && <p>{error}</p>}
       <PhotoForm onSubmit={handleSubmit}>
         <Label htmlFor="title">Title:</Label>

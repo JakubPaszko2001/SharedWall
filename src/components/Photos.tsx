@@ -11,23 +11,47 @@ import { db } from "../config/firebase";
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 60vw;
-  background-color: red;
+  width: 80vw;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-items: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   padding: 2rem;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
-const Post = styled.div``;
+const Post = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  word-break: break-word;
+  max-width: 500px;
+  gap: 10px;
+`;
 const Img = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  max-width: 300px;
 `;
 const Title = styled.h2``;
 const Description = styled.p``;
-const Button = styled.button``;
+const Button = styled.button`
+  cursor: pointer;
+  background-color: white;
+  color: black;
+  border: black solid 2px;
+  border-radius: 20px;
+  padding: 4px 8px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+`;
 
 interface Post {
   id(id: any): void;

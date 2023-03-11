@@ -25,7 +25,10 @@ const Container = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: green;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 0.5em;
 `;
 const Form = styled.form`
   display: flex;
@@ -33,8 +36,28 @@ const Form = styled.form`
   gap: 0.5em;
   padding: 2rem;
 `;
-const Label = styled.label``;
-const Input = styled.input``;
+const Label = styled.label`
+  /* color: white; */
+`;
+const Input = styled.input`
+  border: black solid 2px;
+  border-radius: 5px;
+  padding: 0.5em;
+  &:focus {
+    outline: none;
+  }
+`;
+const Button = styled.button`
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: white;
+  border: black solid 2px;
+  margin-top: 5px;
+  padding: 0.5em;
+`;
+const Error = styled.p`
+  color: red;
+`;
 
 const Modal = ({ closeModal, register }: Props) => {
   const [email, setEmail] = useState("");
@@ -48,7 +71,7 @@ const Modal = ({ closeModal, register }: Props) => {
         await createUserWithEmailAndPassword(auth, email, password);
       }
     } catch (error) {
-      setError("Password should be at least 6 characters");
+      setError("Password should be at least 6 characters.");
     }
   };
 
@@ -56,28 +79,28 @@ const Modal = ({ closeModal, register }: Props) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      setError("Valid email or password");
+      setError("Valid email or password.");
     }
   };
 
-  function submitForm(e: ChangeEvent<HTMLInputElement>) {
+  function submitForm(e: any) {
     e.preventDefault();
     setError("");
 
     if (register && password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match.");
     }
   }
   return (
     <Wrapper onClick={closeModal}>
       <Container
-        onClick={(e: Event) => {
+        onClick={(e: any) => {
           e.stopPropagation();
         }}
       >
         <Form onSubmit={submitForm}>
-          {error && <p>{error}</p>}
-          <Label>Email</Label>
+          {error && <Error>{error}</Error>}
+          <Label>Email:</Label>
           <Input
             type="email"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +108,7 @@ const Modal = ({ closeModal, register }: Props) => {
             }}
             required
           />
-          <Label>Password</Label>
+          <Label>Password:</Label>
           <Input
             type="password"
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +118,7 @@ const Modal = ({ closeModal, register }: Props) => {
           />
           {register ? (
             <>
-              <Label>Confirm Password</Label>
+              <Label>Confirm Password:</Label>
               <Input
                 type="password"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +128,7 @@ const Modal = ({ closeModal, register }: Props) => {
               />
             </>
           ) : null}
-          <button
+          <Button
             type="submit"
             onClick={() => {
               {
@@ -114,8 +137,8 @@ const Modal = ({ closeModal, register }: Props) => {
             }}
           >
             {register ? "Register" : "Login"}
-          </button>
-          <button onClick={closeModal}>Close</button>
+          </Button>
+          <Button onClick={closeModal}>Close</Button>
         </Form>
       </Container>
     </Wrapper>
