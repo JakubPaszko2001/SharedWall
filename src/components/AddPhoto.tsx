@@ -4,37 +4,42 @@ import { storage, db } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-const AddPhotoContainer = styled.div`
+const AddPhotoContainer = styled.section`
   display: flex;
   flex-direction: column;
-  width: 80vw;
-  margin: 0 auto;
-  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
   align-items: center;
-  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.2);
 `;
 
 const PhotoForm = styled.form`
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 100%;
   max-width: 600px;
   gap: 1rem;
   align-items: space-around;
   justify-content: space-around;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 10px;
+  border: 2px solid black;
 `;
 const Label = styled.label`
   font-size: 1.25rem;
 `;
 const Input = styled.input`
-  &:nth-child(2) {
+  &:nth-child(4) {
     background-color: white;
     color: black;
     border: black solid 2px;
     border-radius: 20px;
     padding: 8px 16px;
   }
-  &:nth-child(4) {
+  &:nth-child(6) {
     background-color: white;
     color: black;
     border: black solid 2px;
@@ -59,10 +64,19 @@ const Send = styled.button`
   }
 `;
 const Text = styled.h2`
-  margin-bottom: 10px;
+  margin: 0 auto;
+`;
+const CloseModal = styled.div`
+  width: 20px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-weight: bold;
+  font-size: 1.25rem;
+  cursor: pointer;
 `;
 
-const AddPhoto = ({ currentUser }: any) => {
+const AddPhoto = ({ currentUser, setModal }: any) => {
   const [data, setData] = useState({});
   const [photo, setPhoto] = useState<any>(null);
   const [error, setError] = useState<string | any>(null);
@@ -99,6 +113,10 @@ const AddPhoto = ({ currentUser }: any) => {
     photo && sendData();
   }, [photo]);
 
+  function closeModal() {
+    setModal(false);
+  }
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     await addDoc(collection(db, "photos"), {
@@ -106,13 +124,20 @@ const AddPhoto = ({ currentUser }: any) => {
       timestamp: serverTimestamp(),
       userId: crypto.randomUUID(),
     });
+    closeModal();
   };
 
   return (
-    <AddPhotoContainer>
-      <Text>Add Post</Text>
+    <AddPhotoContainer onClick={closeModal}>
       {error && <p>{error}</p>}
-      <PhotoForm onSubmit={handleSubmit}>
+      <PhotoForm
+        onSubmit={handleSubmit}
+        onClick={(e: any) => {
+          e.stopPropagation();
+        }}
+      >
+        <CloseModal onClick={closeModal}>X</CloseModal>
+        <Text>Add Post</Text>
         <Label htmlFor="title">Title:</Label>
         <Input id="title" name="title" onChange={handleChange} />
         <Label htmlFor="description">Description:</Label>
@@ -131,7 +156,11 @@ const AddPhoto = ({ currentUser }: any) => {
             }
           }}
         />
-        <Send type="submit" disabled={progress !== null && progress < 100}>
+        <Send
+          // onClick={closeModal}
+          type="submit"
+          disabled={progress !== null && progress < 100}
+        >
           Send
         </Send>
       </PhotoForm>

@@ -10,35 +10,34 @@ import React, { useEffect, useState } from "react";
 import { db } from "../config/firebase";
 import styled from "styled-components";
 
-const Container = styled.div`
-  width: 80vw;
-  margin: 0 auto;
+const PhotoContainer = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  /* align-items: center; */
-  /* justify-content: center; */
-  padding: 2rem;
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+`;
+
+const Container = styled.section`
+  width: 80vw;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+  margin-bottom: 20px;
+  grid-template-columns: 1fr;
+  max-width: 400px;
 `;
 
 const Post = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: start;
   word-break: break-word;
-  max-width: 500px;
   gap: 10px;
 `;
 const Img = styled.img`
   width: 100%;
-  max-width: 300px;
 `;
-const Title = styled.h2``;
-const Description = styled.p``;
 const Button = styled.button`
   cursor: pointer;
   background-color: white;
@@ -51,6 +50,12 @@ const Button = styled.button`
     background-color: black;
     color: white;
   }
+`;
+
+const Title = styled.div``;
+const Description = styled.div``;
+const Header = styled.h2`
+  margin-bottom: 20px;
 `;
 
 interface Post {
@@ -91,21 +96,27 @@ const Photos = ({ currentUser }: any) => {
     await deleteDoc(doc(db, "photos", id));
   };
   return (
-    <Container>
-      {post &&
-        post.map((post: Post) => {
-          return (
-            <Post key={post.title}>
-              <Img src={post.url} />
-              <Title>{post.title}</Title>
-              <Description>{post.description}</Description>
-              {currentUser && currentUser.email === post.currentUser && (
-                <Button onClick={() => handleDelete(post.id)}>delete</Button>
-              )}
-            </Post>
-          );
-        })}
-    </Container>
+    <PhotoContainer>
+      <Container>
+        {post &&
+          post.map((post: Post) => {
+            return (
+              <Post key={post.title}>
+                <Img src={post.url} />
+                <div className="title">
+                  <Title>{post.title}</Title>
+                </div>
+                <div className="title">
+                  <Description>{post.description}</Description>
+                </div>
+                {currentUser && currentUser.email === post.currentUser && (
+                  <Button onClick={() => handleDelete(post.id)}>delete</Button>
+                )}
+              </Post>
+            );
+          })}
+      </Container>
+    </PhotoContainer>
   );
 };
 

@@ -54,6 +54,11 @@ const Button = styled.button`
   border: black solid 2px;
   margin-top: 5px;
   padding: 0.5em;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: black;
+    color: white;
+  }
 `;
 const Error = styled.p`
   color: red;
