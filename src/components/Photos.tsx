@@ -67,7 +67,11 @@ interface Post {
 }
 [];
 
-const Photos = ({ currentUser }: any) => {
+interface CurrentUserProps {
+  currentUser: { email: string };
+}
+
+const Photos = ({ currentUser }: CurrentUserProps) => {
   const [post, setPost] = useState([]);
 
   useEffect(() => {

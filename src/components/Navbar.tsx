@@ -60,7 +60,10 @@ const AddPhotoModal = styled.div`
   height: 100%;
 `;
 
-const Navbar = ({ currentUser }: any) => {
+interface CurrentUserProps {
+  currentUser: { email: string };
+}
+const Navbar = ({ currentUser }: CurrentUserProps) => {
   const [modal, setModal] = useState(false);
   const logout = () => {
     return auth.signOut();
