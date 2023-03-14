@@ -15,6 +15,7 @@ const LoginBtn = styled.button`
     color: white;
   }
 `;
+const Container = styled.div``;
 
 const Login = () => {
   const [modal, setModal] = useState(false);
@@ -28,7 +29,7 @@ const Login = () => {
     setModal(false);
   }
   return (
-    <div>
+    <Container>
       <LoginBtn
         onClick={() => {
           setLogin(true);
@@ -40,7 +41,7 @@ const Login = () => {
       {modal && (
         <Modal login={login} closeModal={closeModal} register={false} />
       )}
-    </div>
+    </Container>
   );
 };
 

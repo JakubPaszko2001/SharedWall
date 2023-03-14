@@ -76,7 +76,14 @@ const CloseModal = styled.div`
   cursor: pointer;
 `;
 
-const AddPhoto = ({ currentUser, setModal }: any) => {
+interface AddPhotoType {
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  currentUser: {
+    email: string;
+  };
+}
+
+const AddPhoto = ({ currentUser, setModal }: AddPhotoType) => {
   const [data, setData] = useState({});
   const [photo, setPhoto] = useState<any>(null);
   const [error, setError] = useState<string | any>(null);

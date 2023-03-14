@@ -64,7 +64,16 @@ const Error = styled.p`
   color: red;
 `;
 
-const Modal = ({ closeModal, register }: Props) => {
+const TestAccountDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const TestAccountParagraph = styled.p``;
+
+const Modal = ({ login, closeModal, register }: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -144,6 +153,13 @@ const Modal = ({ closeModal, register }: Props) => {
             {register ? "Register" : "Login"}
           </Button>
           <Button onClick={closeModal}>Close</Button>
+          {login ? (
+            <TestAccountDiv>
+              <TestAccountParagraph>Test Account</TestAccountParagraph>
+              <TestAccountParagraph>Login: test@gmail.com</TestAccountParagraph>
+              <TestAccountParagraph>Password: zaq1@WSX</TestAccountParagraph>
+            </TestAccountDiv>
+          ) : null}
         </Form>
       </Container>
     </Wrapper>

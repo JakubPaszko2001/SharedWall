@@ -51,9 +51,10 @@ const Button = styled.button`
     color: white;
   }
 `;
+const PostDiv = styled.div``;
 
-const Title = styled.div``;
-const Description = styled.div``;
+const Title = styled.h2``;
+const Description = styled.p``;
 const Header = styled.h2`
   margin-bottom: 20px;
 `;
@@ -71,6 +72,19 @@ interface CurrentUserProps {
   currentUser: { email: string };
 }
 
+interface List {
+  currentUser: string;
+  description: string;
+  id: string;
+  timestamp: {
+    nanoseconds: number;
+    seconds: number;
+  };
+  title: string;
+  url: string;
+  userId: string;
+}
+[];
 const Photos = ({ currentUser }: CurrentUserProps) => {
   const [post, setPost] = useState([]);
 
@@ -107,12 +121,12 @@ const Photos = ({ currentUser }: CurrentUserProps) => {
             return (
               <Post key={post.title}>
                 <Img src={post.url} />
-                <div className="title">
+                <PostDiv className="title">
                   <Title>{post.title}</Title>
-                </div>
-                <div className="title">
+                </PostDiv>
+                <PostDiv className="title">
                   <Description>{post.description}</Description>
-                </div>
+                </PostDiv>
                 {currentUser && currentUser.email === post.currentUser && (
                   <Button onClick={() => handleDelete(post.id)}>delete</Button>
                 )}
