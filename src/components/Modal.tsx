@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 import {
   createUserWithEmailAndPassword,
@@ -88,7 +88,7 @@ const Modal = ({ closeModal, register }: Props) => {
     }
   };
 
-  function submitForm(e: any) {
+  function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -99,7 +99,7 @@ const Modal = ({ closeModal, register }: Props) => {
   return (
     <Wrapper onClick={closeModal}>
       <Container
-        onClick={(e: any) => {
+        onClick={(e) => {
           e.stopPropagation();
         }}
       >

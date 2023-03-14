@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import { storage, db } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -83,7 +83,7 @@ const AddPhoto = ({ currentUser, setModal }: any) => {
   const [progress, setProgress] = useState(0);
   const imgType = ["image/jpeg", "image/png", "image/jpg"];
 
-  function handleChange(e: any) {
+  function handleChange(e: { target: HTMLInputElement }) {
     setData({ ...data, [e.target.name]: e.target.value });
   }
 
@@ -117,7 +117,7 @@ const AddPhoto = ({ currentUser, setModal }: any) => {
     setModal(false);
   }
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: Event | any) => {
     e.preventDefault();
     await addDoc(collection(db, "photos"), {
       ...data,
@@ -132,7 +132,7 @@ const AddPhoto = ({ currentUser, setModal }: any) => {
       {error && <p>{error}</p>}
       <PhotoForm
         onSubmit={handleSubmit}
-        onClick={(e: any) => {
+        onClick={(e) => {
           e.stopPropagation();
         }}
       >
@@ -146,7 +146,7 @@ const AddPhoto = ({ currentUser, setModal }: any) => {
         <Input
           id="addPhoto"
           type="file"
-          onChange={(e: any) => {
+          onChange={(e: ChangeEvent<HTMLInputElement> | any) => {
             if (imgType.includes(e.target.files[0].type)) {
               setPhoto(e.target.files[0]);
               setData((prev) => ({ ...prev, currentUser: currentUser.email }));
