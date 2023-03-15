@@ -4,7 +4,7 @@ import Photos from "./components/Photos";
 import { auth } from "./config/firebase";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     const subscribe = auth.onAuthStateChanged((user: any) => {
