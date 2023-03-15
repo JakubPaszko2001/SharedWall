@@ -100,7 +100,6 @@ const Photos = ({ currentUser }: CurrentUserProps) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setPost(list);
-        // console.log(list);
       },
       (err) => {
         // console.log(err);
